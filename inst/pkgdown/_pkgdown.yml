@@ -1,0 +1,62 @@
+# ---------------------------------------------------------------------------
+# pkgdowntemplate :: inst/pkgdown/_pkgdown.yml
+# Defaults inherited by every package that sets `template: package: pkgdowntemplate`.
+# Anything here can be overridden in the consuming package's own _pkgdown.yml.
+# ---------------------------------------------------------------------------
+
+template:
+  bootstrap: 5
+  # Fonts are auto-imported from Google by bslib; colours flow into the SCSS.
+  bslib:
+    primary: "#8a1c1c"          # brand red — links, accents, active states
+    bg: "#ffffff"               # white page background
+    fg: "#231c16"               # warm ink
+    base_font: { google: "Source Sans 3" }
+    heading_font: { google: "Newsreader" }
+    code_font: { google: "IBM Plex Mono" }
+    headings-font-weight: 600
+    link-color: "#231c16"
+    link-hover-color: "#8a1c1c"
+    # Bootstrap variable overrides (applied BEFORE Bootstrap by bslib).
+    border-color: "#e8e1d6"
+    border-radius: "0.3rem"
+    border-radius-lg: "0.45rem"
+    navbar-light-color: "rgba(35,28,22,.72)"
+    navbar-light-hover-color: "#8a1c1c"
+    navbar-light-active-color: "#8a1c1c"
+    navbar-light-brand-color: "#231c16"
+    navbar-light-brand-hover-color: "#231c16"
+    # Custom CSS rules live in inst/pkgdown/extra.scss (applied AFTER Bootstrap).
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [packages, search, github]
+  components:
+    # The rwhite.no packages switcher — identical on every site.
+    packages:
+      text: "packages"
+      menu:
+      - text: "cohort — cohort construction with provenance"
+        href: https://www.rwhite.no/cohort/
+      - text: "plnr — plan & fan out analyses"
+        href: https://www.rwhite.no/plnr/
+      - text: "org — project paths & structure"
+        href: https://www.rwhite.no/org/
+      - text: ---------
+      - text: "rwhite.no"
+        href: https://www.rwhite.no/
+
+footer:
+  structure:
+    left:  [developed_by, family_strip]
+    right: [built_with]
+  components:
+    # Full-width packages strip; CSS in extra.scss lays it out + styles it.
+    family_strip: >
+      <nav class="rw-family" aria-label="rwhite.no packages">
+        <a class="rw-family-label" href="https://www.rwhite.no/">rwhite.no ↗</a>
+        <a href="https://www.rwhite.no/cohort/">cohort</a>
+        <a href="https://www.rwhite.no/plnr/">plnr</a>
+        <a href="https://www.rwhite.no/org/">org</a>
+      </nav>

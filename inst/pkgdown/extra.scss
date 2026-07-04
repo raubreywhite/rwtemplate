@@ -1,0 +1,386 @@
+// ===========================================================================
+// pkgdowntemplate :: inst/pkgdown/extra.scss
+// Custom CSS for the rwhite.no house style. pkgdown adds a template package's
+// extra.scss to the bslib ruleset (AFTER Bootstrap), so it can use Bootstrap
+// + bslib Sass variables. Palette/typography come from template > bslib in
+// _pkgdown.yml; the $rw-* tokens below are local helpers for these rules.
+// Selectors target pkgdown 2.x (Bootstrap 5) markup.
+// ===========================================================================
+
+// ── palette tokens ─────────────────────────────────────────────────────────
+$rw-ink:      #231c16;   // warm near-black ink
+$rw-red:      #8a1c1c;   // brand red — accents, rules, active states
+$rw-red-dk:   #6f1414;
+$rw-red-br:   #ff6a5e;   // bright accent — hover pops, dark-bg tokens
+$rw-bg:       #ffffff;
+$rw-border:   #e8e1d6;   // warm greige hairline
+$rw-muted:    #6b6157;   // warm grey
+$rw-faint:    #9c9186;
+$rw-tint:     #f6e6e2;   // soft red wash — chips / overlines
+$rw-tint-fg:  #8a3a2f;
+$rw-ink-bg:   #231c16;   // code block background (warm near-black)
+
+// Crisper text: macOS renders the default smoothing heavy and slightly blurry,
+// especially for the serif headings. Antialiased rendering keeps them clean.
+body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+// ── brand wordmark ─────────────────────────────────────────────────────────
+.navbar-brand {
+  font-family: "Newsreader", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+// version pill next to the brand
+.navbar .navbar-brand + small,
+.navbar .version {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .72rem;
+  color: $rw-tint-fg;
+  background: $rw-tint;
+  padding: .15rem .45rem;
+  border-radius: 1rem;
+}
+// White navbar (override Bootstrap's tinted bg-light) with a hairline divider.
+.navbar { background-color: #fff !important; border-bottom: 1px solid $rw-border; }
+// active / hovered nav links read as red text, not a grey pill
+.navbar .nav-link.active,
+.navbar .nav-link:hover,
+.navbar .nav-link:focus { background: transparent !important; color: $rw-red !important; }
+
+// ── breathing room beneath the fixed navbar + an airier vertical rhythm ──────
+// The navbar is position:fixed (~59px); give page content a clear gap below it
+// and let anchor jumps land below the bar.
+html { scroll-padding-top: 4.75rem; }
+body:not(.template-home) main { padding-top: 1.7rem; }
+main > .page-header { padding-bottom: 1.4rem; margin-bottom: 1.9rem; }
+main p, main li { line-height: 1.7; }
+main h2 { margin-top: 2.7rem; }
+main h3 { margin-top: 2rem; }
+
+// ── headings & lede ─────────────────────────────────────────────────────────
+main h1, main h2, main h3 { letter-spacing: -.01em; }
+
+// Home hero: big serif title + red rule + lede first paragraph.
+// Scope to the home page; pkgdown labels it body.template-home, but we also
+// match the home layout container so the hero survives markup changes.
+.template-home, body:has(.template-article-index) .template-home {
+  main > h1:first-of-type {
+    font-size: 2.8rem;
+    margin-bottom: .4rem;
+    padding-bottom: 1.1rem;
+    border-bottom: 0;
+    position: relative;
+  }
+  main > h1:first-of-type::after {
+    content: "";
+    position: absolute; left: 0; bottom: 0;
+    width: 64px; height: 3px; background: $rw-red;
+  }
+  main > h1:first-of-type + p {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: #55493d;
+    max-width: 36em;
+  }
+}
+
+// Section-label overline helper (use <p class="overline"> in README if wanted)
+.overline {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  color: $rw-red; margin-bottom: 1rem;
+}
+
+// ── code blocks (downlit / pandoc tokens) ──────────────────────────────────
+code {
+  background: #f4efe7;
+  color: $rw-ink;
+  padding: .12em .4em;
+  border-radius: 4px;
+  font-size: .88em;
+}
+pre {
+  background: $rw-ink-bg;
+  border: 0;
+  border-radius: .4rem;
+  padding: 1.05rem 1.25rem;
+  code { background: none; color: #ece4d8; padding: 0; }
+}
+// Token palette for dark code blocks. pkgdown's built-in highlight CSS colours
+// `code span.X` for a LIGHT background and out-specifies loose rules, so we use
+// a high-specificity catch-all (everything light) + accent classes, all marked
+// !important so NOTHING can render dark-on-dark.
+pre code span { color: #ece4d8 !important; }                       // default: warm light
+pre code span.co, pre code span.do { color: #9a8f82 !important; font-style: italic; } // comment/output
+pre code span.st, pre code span.sc, pre code span.ss { color: #a9c088 !important; }   // string
+pre code span.fu { color: #ff8f7a !important; }                   // function
+pre code span.va { color: #ece4d8 !important; }                   // variable (dataset names)
+pre code span.dv, pre code span.fl, pre code span.bn { color: #e3ba7d !important; }   // numbers
+pre code span.cn, pre code span.dt { color: #e3ba7d !important; } // constants / types
+pre code span.kw, pre code span.cf { color: #d3a5ae !important; } // keyword / control
+pre code span.op { color: #c2b6a6 !important; }                   // operator
+// downlit wraps fn/dataset names in <a>; let the link take its token colour
+// (coral for functions, light for variables) instead of the dark page link colour
+pre a, pre code a { color: inherit !important; text-decoration-color: rgba(255,255,255,.32); }
+pre a:hover, pre code a:hover { color: $rw-red-br !important; }
+// example output (pkgdown wraps in pre.r-output / .sourceCode-output)
+.r-output, pre.r-output, .output pre {
+  background: none;
+  border-left: 2px solid $rw-border;
+  border-radius: 0;
+  padding: .15rem 0 .15rem 1.1rem;
+  color: $rw-muted;
+}
+
+// ── home sidebar (Links / License / Citation / Developers) ─────────────────
+aside {
+  h2 {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    color: $rw-faint; font-weight: 600;
+  }
+  .developers li { list-style: none; }
+}
+
+// ── reference index ─────────────────────────────────────────────────────────
+.template-reference-index {
+  // function names read as clean mono text, not dense beige chips
+  code { background: none; padding: 0; color: $rw-ink; }
+  a { text-decoration: none; }
+  a:hover { color: $rw-red; }
+  .section { margin-bottom: 2.8rem; }
+  // clear hierarchy so each entry is easy to scan: bold mono names, lighter desc
+  dt { margin-top: 1.4rem; font-weight: 700; font-size: 1.02rem; }
+  dt code, dt a { font-weight: 700; color: $rw-ink; }
+  dt a:hover, dt a:hover code { color: $rw-red; }
+  dd { margin-top: .25rem; color: $rw-muted; font-size: .92rem; line-height: 1.5; }
+  .section > h2 {
+    display: flex; align-items: center; gap: .8rem;
+    font-size: 1rem; letter-spacing: .1em; text-transform: uppercase;
+    &::after { content: ""; flex: 1; height: 1px; background: $rw-border; }
+  }
+  .ref-index, dl.ref-index { border: 0; }
+  .ref-index tr, .ref-index dt, .ref-index dd { border: 0 !important; }
+  .ref-index td:first-child, .ref-index dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-weight: 600;
+  }
+  .ref-index td:last-child, .ref-index dd { padding-left: 1.1rem; color: $rw-muted; }
+  .ref-index td:first-child a + a::before,
+  .ref-index dt a + a::before {
+    content: "·"; color: #cab9a8; margin: 0 .7rem; font-weight: 400;
+  }
+}
+
+// ── reference detail (incl. R6) ─────────────────────────────────────────────
+.template-reference-topic {
+  table { border-collapse: collapse; }
+  th {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    color: $rw-faint; border-bottom: 1px solid $rw-border;
+  }
+  td { border: 0; vertical-align: top; }
+  td:first-child { font-family: "IBM Plex Mono", ui-monospace, monospace; font-weight: 600; }
+  .sourceCode + table { margin-top: .4rem; }
+  h3 code { color: $rw-tint-fg; }
+}
+
+// ── "On this page" contents rail ────────────────────────────────────────────
+#toc, aside nav[aria-label="On this page"] {
+  .nav-link {
+    border-left: 2px solid $rw-border;
+    color: $rw-muted; font-size: .85rem;
+    &.active { color: $rw-ink; border-left-color: $rw-red; font-weight: 600; }
+  }
+}
+
+// ── footer + rwhite.no packages strip ───────────────────────────────────────
+.template-footer .pkgdown-footer, footer {
+  border-top: 1px solid $rw-border;
+}
+.rw-family {
+  display: flex; flex-wrap: wrap; gap: .35rem 1rem; align-items: center;
+  margin-top: .9rem;
+  .rw-family-label {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+    color: #b7ab9c; text-decoration: none;
+    &:hover { color: $rw-red; }
+  }
+  a {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: .95rem; color: $rw-muted; text-decoration: none;
+    &:hover { color: $rw-red; }
+  }
+}
+
+// ── badges (CRAN status etc.) sit a touch calmer ────────────────────────────
+.template-home aside img { vertical-align: middle; }
+
+// ===========================================================================
+// HOME PAGE COMPONENTS (hero via content-home.html; cards/gallery in index.md)
+// ===========================================================================
+
+// ── hero band ────────────────────────────────────────────────────────────
+.rw-hero {
+  display: grid; grid-template-columns: 1fr auto; gap: 2.2rem; align-items: center;
+  border: 1px solid $rw-border; border-radius: .5rem; background: #fff;
+  padding: 2.4rem 2.6rem; margin: 4.75rem 0 2.4rem;
+}
+.rw-hero-body { min-width: 0; }
+.rw-hero h1 {
+  font-family: "Newsreader", Georgia, serif; font-weight: 600;
+  font-size: 2.7rem; line-height: 1.04; letter-spacing: -.02em; margin: 0;
+}
+.rw-hero .rw-rule { width: 64px; height: 3px; background: $rw-red; margin: 1.1rem 0; }
+.rw-hero .rw-lede {
+  font-family: "Newsreader", Georgia, serif; font-size: 1.2rem; line-height: 1.5;
+  color: #55493d; max-width: 34em; margin: 0 0 1.5rem;
+}
+.rw-hero .rw-lede em { color: $rw-ink; font-style: italic; }
+.rw-hero .rw-hero-art { display: flex; align-items: center; justify-content: center; }
+.rw-hero .rw-hero-art img { width: 150px; height: auto; }
+
+// ── CTA buttons ────────────────────────────────────────────────────────────
+.rw-cta { display: flex; gap: 1.4rem; align-items: center; flex-wrap: wrap; }
+.rw-btn {
+  display: inline-block; background: $rw-ink; color: #fff !important;
+  font-weight: 600; font-size: .95rem; padding: .6rem 1.2rem; border-radius: .35rem;
+  text-decoration: none !important;
+}
+.rw-btn:hover { background: #3a2f26; }
+.rw-btn-link {
+  font-weight: 600; color: $rw-ink !important; text-decoration: none !important;
+  border-bottom: 2px solid $rw-red; padding-bottom: 2px;
+}
+.rw-btn-link:hover { color: $rw-red !important; }
+
+// ── section label (matches the overline) ────────────────────────────────────
+.rw-section {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  color: $rw-faint; font-weight: 600;
+  display: flex; align-items: center; gap: .9rem; margin: 2.6rem 0 1.4rem;
+}
+.rw-section::after { content: ""; flex: 1; height: 1px; background: $rw-border; }
+
+// ── feature cards (numbered) ────────────────────────────────────────────────
+.rw-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.rw-card .rw-card-num {
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .8rem; color: $rw-faint;
+}
+.rw-card h3 {
+  font-family: "Newsreader", Georgia, serif; font-weight: 600; font-size: 1.3rem; margin: .3rem 0 .4rem;
+}
+.rw-card p { color: $rw-muted; font-size: .95rem; margin: 0; }
+
+// ── gallery ──────────────────────────────────────────────────────────────────
+.rw-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+.rw-gallery figure { margin: 0; }
+.rw-gallery .rw-tile {
+  border: 1px solid $rw-border; border-radius: .5rem; background: #fff;
+  aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+  padding: 1rem; overflow: hidden;
+}
+.rw-gallery .rw-tile img { max-width: 100%; max-height: 100%; }
+.rw-gallery figcaption {
+  font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: .8rem;
+  color: $rw-muted; margin-top: .6rem;
+}
+
+// Content images scale down to their column instead of overflowing it.
+.rw-home-main img,
+.template-article main img,
+.template-reference-topic main img { max-width: 100%; height: auto; }
+
+@media (max-width: 800px) {
+  .rw-hero { grid-template-columns: 1fr; }
+  .rw-hero .rw-hero-art img { width: 120px; }
+  .rw-cards, .rw-gallery { grid-template-columns: 1fr; }
+}
+
+// ── home layout: full-width hero (template sibling) + 2-col content/sidebar ──
+// content-home.html renders .rw-hero as a block ABOVE .rw-home, so the hero
+// spans the full content width with no JS or margin hacks. .rw-home is just the
+// content + sidebar grid that follows it.
+.rw-home {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18rem;
+  column-gap: 2.6rem;
+  align-items: start;
+}
+.rw-home-main { grid-column: 1; min-width: 0; }
+.rw-home-aside { grid-column: 2; }
+@media (max-width: 800px) {
+  .rw-home { grid-template-columns: 1fr; }
+  .rw-home-aside { grid-column: 1; }
+}
+
+// pkgdown's tweak_homepage_html wraps the first <h1> (our hero title) in a
+// .page-header and injects a float-right logo beside it. Neutralise that
+// wrapper and hide the injected logo — the hero shows its own .rw-hero-art logo.
+.rw-hero .page-header { margin: 0; padding: 0; border: 0; min-height: 0; }
+.rw-hero .page-header .logo { display: none; }
+
+// ── navbar dropdown (packages switcher) — styled, not the default BS box ─────
+.navbar .dropdown-menu {
+  background: #fff;
+  border: 1px solid $rw-border;
+  border-radius: .5rem;
+  padding: .45rem;
+  margin-top: .45rem;
+  min-width: 17rem;
+  box-shadow: 0 14px 34px rgba(35,28,22,.14);
+}
+.navbar .dropdown-item {
+  font-family: "Newsreader", Georgia, serif;
+  font-size: .98rem;
+  color: $rw-ink;
+  border-radius: .35rem;
+  padding: .46rem .7rem;
+}
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+  background: $rw-tint;
+  color: $rw-red-dk;
+}
+.navbar .dropdown-divider { margin: .35rem .2rem; border-top-color: $rw-border; }
+
+// ── page eyebrow on article / reference headers ──────────────────────────────
+.template-article .page-header,
+.template-reference-topic .page-header,
+.template-reference-index .page-header { position: relative; }
+.template-article .page-header::before { content: "Article"; }
+.template-reference-topic .page-header::before { content: "Reference"; }
+.template-reference-index .page-header::before { content: "Reference"; }
+.template-article .page-header::before,
+.template-reference-topic .page-header::before,
+.template-reference-index .page-header::before {
+  display: block;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  color: $rw-red; font-weight: 600; margin-bottom: .55rem;
+}
+// byline (authors / date / source) reads as one calm muted line
+.template-article .page-header .author,
+.template-article .page-header .date,
+.template-reference-topic .page-header .dont-index,
+.template-article .page-header .dont-index {
+  color: $rw-muted; font-size: .9rem;
+}
+
+// On the reference index, each group header already carries its own hairline,
+// so the page-header's underline doubles up. Drop it there only (article and
+// topic pages keep the underline, where it cleanly caps the title block).
+.template-reference-index .page-header { border-bottom: 0; padding-bottom: .25rem; }
+
+// ── full-width list/index pages ──────────────────────────────────────────────
+// The reference index and article index are lists, so they use the full content
+// width like the home (no side rail). Prose pages (articles) and reference topic
+// pages keep their narrower, readable column + "On this page" rail.
+.template-reference-index main.col-md-9,
+.template-article-index main.col-md-9 { flex: 0 0 100%; max-width: 100%; }
+.template-reference-index aside.col-md-3,
+.template-article-index aside.col-md-3 { display: none; }
