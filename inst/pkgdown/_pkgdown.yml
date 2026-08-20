@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
-# pkgdowntemplate :: inst/pkgdown/_pkgdown.yml
-# Defaults inherited by every package that sets `template: package: pkgdowntemplate`.
+# rwtemplate :: inst/pkgdown/_pkgdown.yml
+# Defaults inherited by every package that sets `template: package: rwtemplate`.
 # Anything here can be overridden in the consuming package's own _pkgdown.yml.
 # ---------------------------------------------------------------------------
 

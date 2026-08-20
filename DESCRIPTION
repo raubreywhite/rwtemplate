@@ -1,4 +1,4 @@
-Package: pkgdowntemplate
+Package: rwtemplate
 Title: Shared pkgdown House Style for the rwhite.no R Packages
 Version: 0.1.0
 Authors@R: c(
@@ -9,10 +9,10 @@ Description: A pkgdown template package that gives every rwhite.no package a
     consistent Bootstrap 5 house style: Newsreader + Source Sans 3 typography,
     the warm brand-red palette, a light editorial navbar with a packages
     switcher, and a common footer. Packages opt in with
-    template: { package: pkgdowntemplate } in their own _pkgdown.yml.
+    template: { package: rwtemplate } in their own _pkgdown.yml.
 License: MIT + file LICENSE
-URL: https://www.rwhite.no/pkgdowntemplate/, https://github.com/raubreywhite/pkgdowntemplate
-BugReports: https://github.com/raubreywhite/pkgdowntemplate/issues
+URL: https://www.rwhite.no/rwtemplate/, https://github.com/raubreywhite/rwtemplate
+BugReports: https://github.com/raubreywhite/rwtemplate/issues
 Encoding: UTF-8
 Config/Needs/website: pkgdown
 RoxygenNote: 7.3.2

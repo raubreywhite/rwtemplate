@@ -1,4 +1,4 @@
-# pkgdowntemplate
+# rwtemplate
 
 Shared **pkgdown house style** for the rwhite.no R packages — Newsreader + Source
 Sans 3 typography, the warm brand-red palette, a light editorial navbar with a
@@ -9,19 +9,19 @@ package.
 
 ## Use it in a package
 
-1. Declare `pkgdowntemplate` as a website dependency in the package's
+1. Declare `rwtemplate` as a website dependency in the package's
    `DESCRIPTION`, as an **inline GitHub ref** (CI installs `Config/Needs/website`
    entries directly with pak, so a bare package name will *not* resolve):
 
    ```
-   Config/Needs/website: raubreywhite/pkgdowntemplate
+   Config/Needs/website: raubreywhite/rwtemplate
    ```
 
 2. Point the package's `_pkgdown.yml` at the template:
 
    ```yaml
    template:
-     package: pkgdowntemplate
+     package: rwtemplate
 
    # keep your own url + reference: / articles: groups below
    ```
@@ -38,7 +38,7 @@ package's `_pkgdown.yml`:
 
 ```yaml
 template:
-  package: pkgdowntemplate
+  package: rwtemplate
   params:
     hero:
       overline: "R package · Cohort construction"
