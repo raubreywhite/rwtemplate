@@ -43,6 +43,8 @@ navbar:
         href: https://www.rwhite.no/plnr/
       - text: "org — project paths & structure"
         href: https://www.rwhite.no/org/
+      - text: "pbn — analysis layout"
+        href: https://www.rwhite.no/pbn/
       - text: ---------
       - text: "rwhite.no"
         href: https://www.rwhite.no/
@@ -59,4 +61,5 @@ footer:
         <a href="https://www.rwhite.no/cohort/">cohort</a>
         <a href="https://www.rwhite.no/plnr/">plnr</a>
         <a href="https://www.rwhite.no/org/">org</a>
+        <a href="https://www.rwhite.no/pbn/">pbn</a>
       </nav>
