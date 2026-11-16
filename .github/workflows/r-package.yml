@@ -240,6 +240,19 @@ jobs:
           LOC_ALLOWLIST: ${{ inputs.loc-allowlist }}
         shell: Rscript {0}
         run: |
+          # stop() cuts its message at getOption("warning.length"), 1000 bytes
+          # by default and 8170 at most. A long list then ended mid-item in
+          # the log, and read as complete. So this prints every item to stdout
+          # first, and stops with a message short enough to survive.
+          stop_with_list <- function(head, items, tail = NULL) {
+            cat(head, "\n", paste0("  ", items, "\n"), sep = "")
+            if (!is.null(tail)) {
+              cat(tail, "\n", sep = "")
+            }
+            flush(stdout())
+            stop(head, " ", length(items), ", listed above.", call. = FALSE)
+          }
+
           .libPaths(c(Sys.getenv("GATE_LIB"), .libPaths()))
           files <- readLines(Sys.getenv("CODE_FILES"))
 
@@ -266,22 +279,20 @@ jobs:
           # outlives its reason.
           stale <- setdiff(allowlist, files)
           if (length(stale) > 0) {
-            stop(
-              "These loc-allowlist entries name no file in R/:\n",
-              paste0("  ", stale, collapse = "\n"),
-              "\nRemove them from loc-allowlist.",
-              call. = FALSE
+            stop_with_list(
+              "These loc-allowlist entries name no file in R/:",
+              stale,
+              "Remove them from loc-allowlist."
             )
           }
 
           counts <- org::loc_per_file(files)
           over <- counts[counts > max_loc & !names(counts) %in% allowlist]
           if (length(over) > 0) {
-            stop(
-              "These files hold more than ", max_loc, " code lines:\n",
-              paste0("  ", names(over), " (", over, ")", collapse = "\n"),
-              "\nSplit them, or add them to loc-allowlist.",
-              call. = FALSE
+            stop_with_list(
+              paste0("These files hold more than ", max_loc, " code lines:"),
+              paste0(names(over), " (", over, ")"),
+              "Split them, or add them to loc-allowlist."
             )
           }
 
@@ -300,6 +311,17 @@ jobs:
           LINT_ALLOWLIST: ${{ inputs.lint-allowlist }}
         shell: Rscript {0}
         run: |
+          # The same function as in "Check the code lines in every code file".
+          # Each step is its own R process, so the two cannot share one copy.
+          stop_with_list <- function(head, items, tail = NULL) {
+            cat(head, "\n", paste0("  ", items, "\n"), sep = "")
+            if (!is.null(tail)) {
+              cat(tail, "\n", sep = "")
+            }
+            flush(stdout())
+            stop(head, " ", length(items), ", listed above.", call. = FALSE)
+          }
+
           .libPaths(c(Sys.getenv("GATE_LIB"), .libPaths()))
           files <- readLines(Sys.getenv("CODE_FILES"))
           if (length(files) == 0) {
@@ -385,10 +407,9 @@ jobs:
 
           malformed <- allowlist[!grepl("^[^:]+:[A-Za-z0-9._]+$", allowlist)]
           if (length(malformed) > 0) {
-            stop(
-              "These lint-allowlist entries are not <path>:<linter>:\n",
-              paste0("  ", malformed, collapse = "\n"),
-              call. = FALSE
+            stop_with_list(
+              "These lint-allowlist entries are not <path>:<linter>:",
+              malformed
             )
           }
 
@@ -397,11 +418,10 @@ jobs:
           entry_file <- sub(":[^:]*$", "", allowlist)
           stale_file <- allowlist[!entry_file %in% files]
           if (length(stale_file) > 0) {
-            stop(
-              "These lint-allowlist entries name no file this gate checks:\n",
-              paste0("  ", stale_file, collapse = "\n"),
-              "\nRemove them from lint-allowlist.",
-              call. = FALSE
+            stop_with_list(
+              "These lint-allowlist entries name no file this gate checks:",
+              stale_file,
+              "Remove them from lint-allowlist."
             )
           }
 
@@ -411,25 +431,22 @@ jobs:
           key <- paste0(found$file, ":", found$linter, recycle0 = TRUE)
           unused <- setdiff(allowlist, key)
           if (length(unused) > 0) {
-            stop(
-              "These lint-allowlist entries suppress no lint:\n",
-              paste0("  ", unused, collapse = "\n"),
-              "\nRemove them from lint-allowlist.",
-              call. = FALSE
+            stop_with_list(
+              "These lint-allowlist entries suppress no lint:",
+              unused,
+              "Remove them from lint-allowlist."
             )
           }
 
           over <- found[!key %in% allowlist, , drop = FALSE]
           if (nrow(over) > 0) {
-            stop(
-              "These lints must be fixed:\n",
+            stop_with_list(
+              "These lints must be fixed:",
               paste0(
-                "  ", over$file, ":", over$line, "  ",
-                over$linter, "  ", over$message,
-                collapse = "\n"
+                over$file, ":", over$line, "  ",
+                over$linter, "  ", over$message
               ),
-              "\nFix them, or add <path>:<linter> to lint-allowlist.",
-              call. = FALSE
+              "Fix them, or add <path>:<linter> to lint-allowlist."
             )
           }
 
