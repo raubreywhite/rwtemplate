@@ -39,12 +39,12 @@ navbar:
       menu:
       - text: "cohort — cohort construction with provenance"
         href: https://www.rwhite.no/cohort/
-      - text: "plnr — plan & fan out analyses"
-        href: https://www.rwhite.no/plnr/
       - text: "org — project paths & structure"
         href: https://www.rwhite.no/org/
       - text: "pbn — analysis layout"
         href: https://www.rwhite.no/pbn/
+      - text: "plnr — plan & fan out analyses"
+        href: https://www.rwhite.no/plnr/
       - text: ---------
       - text: "rwhite.no"
         href: https://www.rwhite.no/
@@ -59,7 +59,7 @@ footer:
       <nav class="rw-family" aria-label="rwhite.no packages">
         <a class="rw-family-label" href="https://www.rwhite.no/">rwhite.no ↗</a>
         <a href="https://www.rwhite.no/cohort/">cohort</a>
-        <a href="https://www.rwhite.no/plnr/">plnr</a>
         <a href="https://www.rwhite.no/org/">org</a>
         <a href="https://www.rwhite.no/pbn/">pbn</a>
+        <a href="https://www.rwhite.no/plnr/">plnr</a>
       </nav>
